@@ -102,19 +102,19 @@ class FriendApp {
   sort(e) {
     switch (e.target.value) {
       case "ageUp":
-        this.filterByAge();
+        this.sortByAge();
         this.selectedSort = e.target.value;
         break;
       case "ageDown":
-        this.filterByAge(false);
+        this.sortByAge(false);
         this.selectedSort = e.target.value;
         break;
       case "nameDown":
-        this.filterByName(false);
+        this.sortByName(false);
         this.selectedSort = e.target.value;
         break;
       case "nameUp":
-        this.filterByName();
+        this.sortByName();
         this.selectedSort = e.target.value;
         break;
       case "male":
@@ -130,29 +130,29 @@ class FriendApp {
         this.selectedGender = e.target.value;
     }
   }
-  filterByAge(asc = true) {
+  sortByAge(asc = true) {
     this.hidePersons();
     this.friends = this.initialFriends;
     if (this.filterInput.value) {
-      this.friends = this.getPersonsByInput();
+      this.friends = this.getPersonsByText();
     }
     this.friends = this.getPersonsByGender();
 
-    this.showPersons(this.sortPersonsByAge(asc));
+    this.showPersons(this.getPersonsByAge(asc));
   }
 
-  filterByName(asc = true) {
+  sortByName(asc = true) {
     this.hidePersons();
     this.friends = this.initialFriends;
     if (this.filterInput.value) {
-      this.friends = this.getPersonsByInput();
+      this.friends = this.getPersonsByText();
     }
     this.friends = this.getPersonsByGender();
 
-    this.showPersons(this.sortPersonsByName(asc));
+    this.showPersons(this.getPersonsByName(asc));
   }
 
-  sortPersonsByName(asc) {
+  getPersonsByName(asc) {
     const result = !asc
       ? this.friends.sort((a, b) => {
           if (a.name.first < b.name.first) {
@@ -175,7 +175,7 @@ class FriendApp {
     return result;
   }
 
-  sortPersonsByAge(asc) {
+  getPersonsByAge(asc) {
     const result = asc
       ? this.friends.sort((a, b) => a.dob.age - b.dob.age)
       : this.friends.sort((a, b) => b.dob.age - a.dob.age);
@@ -185,7 +185,7 @@ class FriendApp {
   filterByGender(gender) {
     this.friends = this.initialFriends;
     if (this.filterInput.value) {
-      this.friends = this.getPersonsByInput();
+      this.friends = this.getPersonsByText();
     }
 
     if (gender !== "all") {
@@ -201,16 +201,16 @@ class FriendApp {
   sortPersons() {
     switch (this.selectedSort) {
       case "ageUp":
-        this.friends = this.sortPersonsByAge();
+        this.friends = this.getPersonsByAge();
         break;
       case "ageDown":
-        this.friends = this.sortPersonsByAge(false);
+        this.friends = this.getPersonsByAge(false);
         break;
       case "nameDown":
-        this.friends = this.sortPersonsByName(false);
+        this.friends = this.getPersonsByName(false);
         break;
       case "nameUp":
-        this.friends = this.sortPersonsByName();
+        this.friends = this.getPersonsByName();
     }
   }
 
@@ -226,7 +226,7 @@ class FriendApp {
     return result;
   }
 
-  getPersonsByInput() {
+  getPersonsByText() {
     const result = this.friends.filter(
       function(person) {
         return (
@@ -246,7 +246,7 @@ class FriendApp {
     this.hidePersons();
     this.friends = this.initialFriends;
     if (this.filterInput.value) {
-      this.friends = this.getPersonsByInput();
+      this.friends = this.getPersonsByText();
     }
     this.friends = this.getPersonsByGender();
     this.sortPersons();
